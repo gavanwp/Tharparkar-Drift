@@ -5,34 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Desert Thunder: Tharparkar Drift</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              cinzel: ['Cinzel', 'serif'],
+              rajdhani: ['Rajdhani', 'sans-serif'],
+              teko: ['Teko', 'sans-serif'],
+            },
+            colors: {
+              thar: {
+                dark: '#0f0a05',
+                gold: '#d4af37',
+                rust: '#c2410c',
+                sand: '#eab308'
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'scanline': 'scanline 8s linear infinite',
+              'grid-move': 'gridMove 20s linear infinite',
+              'spin-slow': 'spin 10s linear infinite',
+              'progress': 'progress 2s ease-in-out infinite',
+            },
+            keyframes: {
+              scanline: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100%)' }
+              },
+              gridMove: {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(40px)' }
+              },
+              progress: {
+                '0%': { width: '0%', marginLeft: '0%' },
+                '50%': { width: '50%', marginLeft: '25%' },
+                '100%': { width: '0%', marginLeft: '100%' }
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
       body {
         font-family: 'Rajdhani', sans-serif;
-        background-color: #1a1510;
+        background-color: #050301;
         color: #f5ecd5;
+        overflow-x: hidden;
       }
-      h1, h2, h3, h4, h5, h6 {
-        font-family: 'Cinzel', serif;
+      
+      /* Film Grain Overlay */
+      .bg-noise {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 50;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       }
-      /* Custom scrollbar for that rugged feel */
-      ::-webkit-scrollbar {
-        width: 8px;
+
+      /* CRT Scanline */
+      .scanline-overlay {
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.1) 50%,
+          rgba(0,0,0,0.1)
+        );
+        background-size: 100% 4px;
+        position: fixed;
+        pointer-events: none;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: 40;
+        opacity: 0.15;
       }
-      ::-webkit-scrollbar-track {
-        background: #2a2018;
+
+      /* Moving Grid Background */
+      .perspective-grid {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        perspective: 1000px;
+        z-index: 0;
+        pointer-events: none;
+        overflow: hidden;
       }
-      ::-webkit-scrollbar-thumb {
-        background: #d97706; 
-        border-radius: 4px;
+      .grid-lines {
+        position: absolute;
+        top: -50%; left: -50%; width: 200%; height: 200%;
+        background-image: 
+          linear-gradient(rgba(234, 88, 12, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(234, 88, 12, 0.1) 1px, transparent 1px);
+        background-size: 40px 40px;
+        transform: rotateX(60deg);
+        animation: gridMove 10s linear infinite;
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 80%);
       }
-      .ajrak-pattern {
-        background-color: #881313;
-        background-image: radial-gradient(#1a1510 15%, transparent 16%),
-        radial-gradient(#1a1510 15%, transparent 16%);
-        background-size: 20px 20px;
-        background-position: 0 0, 10px 10px;
-      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #1a110a; }
+      ::-webkit-scrollbar-thumb { background: #c2410c; border-radius: 0px; }
+      
+      /* Utility Classes */
+      .text-glow { text-shadow: 0 0 10px rgba(234, 179, 8, 0.5); }
+      .clip-angled { clip-path: polygon(10% 0, 100% 0, 100% 90%, 90% 100%, 0 100%, 0 10%); }
+      .clip-hex { clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
     </style>
   <script type="importmap">
 {
@@ -48,5 +132,10 @@
 </head>
   <body>
     <div id="root"></div>
+    <div class="bg-noise"></div>
+    <div class="scanline-overlay"></div>
+    <div class="perspective-grid">
+      <div class="grid-lines"></div>
+    </div>
   </body>
 </html>

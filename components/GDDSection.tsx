@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { generateGameDesignDoc } from '../services/geminiService';
-import { Loader2, ScrollText, BookOpen } from 'lucide-react';
+import { Loader2, ScrollText, BookOpen, FolderOpen, FileText, ChevronRight, Hash } from 'lucide-react';
 
 const topics = [
   "Core Gameplay Loop & Mechanics",
@@ -39,52 +39,98 @@ const GDDSection: React.FC = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full min-h-[600px]">
-      {/* Sidebar */}
-      <div className="lg:col-span-1 space-y-2">
-        <h3 className="text-xl font-cinzel text-orange-500 mb-4 flex items-center gap-2">
-          <BookOpen className="w-5 h-5" />
-          Design Chapters
-        </h3>
-        {topics.map((topic) => (
-          <button
-            key={topic}
-            onClick={() => handleGenerate(topic)}
-            disabled={loading && activeTopic === topic}
-            className={`w-full text-left p-3 rounded-lg border transition-all duration-300 ${
-              activeTopic === topic
-                ? "bg-orange-600 border-orange-400 text-white shadow-lg shadow-orange-900/50"
-                : "bg-gray-900/50 border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-orange-200"
-            }`}
-          >
-            {topic}
-          </button>
-        ))}
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full min-h-[700px] max-w-7xl mx-auto p-4">
+      
+      {/* Sidebar: File Directory */}
+      <div className="lg:col-span-3 bg-black/40 border border-white/10 p-1 backdrop-blur-sm flex flex-col">
+        <div className="p-4 border-b border-white/10 bg-black/40">
+            <h3 className="text-xl font-teko text-orange-500 flex items-center gap-2 tracking-wide uppercase">
+              <FolderOpen className="w-5 h-5" />
+              Project Files
+            </h3>
+        </div>
+        <div className="p-2 space-y-1 flex-1 overflow-y-auto">
+            {topics.map((topic, idx) => (
+              <button
+                key={topic}
+                onClick={() => handleGenerate(topic)}
+                disabled={loading && activeTopic === topic}
+                className={`w-full text-left p-3 group relative overflow-hidden transition-all duration-300 border border-transparent ${
+                  activeTopic === topic
+                    ? "bg-orange-500/10 border-orange-500/50 text-orange-100"
+                    : "hover:bg-white/5 hover:border-white/10 text-gray-500 hover:text-gray-300"
+                }`}
+              >
+                {/* Active Indicator */}
+                {activeTopic === topic && (
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
+                )}
+                
+                <div className="flex items-center gap-3 relative z-10">
+                    <span className="font-mono text-[10px] opacity-50">0{idx + 1}</span>
+                    <span className="font-rajdhani font-bold text-sm leading-tight">{topic}</span>
+                </div>
+
+                {/* Hover Glitch Line */}
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-orange-500/50 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+              </button>
+            ))}
+        </div>
+        <div className="p-4 text-[10px] font-mono text-gray-600 border-t border-white/10 bg-black/60">
+            SECURE CONNECTION // ENCRYPTED
+        </div>
       </div>
 
-      {/* Content Area */}
-      <div className="lg:col-span-3 bg-black/60 border border-orange-900/30 rounded-xl p-8 backdrop-blur-md relative overflow-hidden">
-        {/* Decorative Sindhi Pattern Top */}
-        <div className="absolute top-0 left-0 right-0 h-2 ajrak-pattern opacity-50"></div>
-
-        {loading ? (
-          <div className="flex flex-col items-center justify-center h-full text-orange-500 animate-pulse">
-            <Loader2 className="w-12 h-12 animate-spin mb-4" />
-            <p className="font-rajdhani text-xl">Consulting Design Archives...</p>
-          </div>
-        ) : (
-          <div className="prose prose-invert prose-orange max-w-none">
-            <h2 className="text-3xl font-cinzel text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-200 mb-6 border-b border-orange-800 pb-2">
-              {activeTopic}
-            </h2>
-            <div className="font-rajdhani text-lg leading-relaxed whitespace-pre-wrap text-gray-200">
-              {content}
+      {/* Content Area: Document Viewer */}
+      <div className="lg:col-span-9 bg-black/80 border border-orange-900/30 relative flex flex-col shadow-2xl">
+        {/* Decorative Top Bar */}
+        <div className="h-2 bg-gradient-to-r from-orange-600 via-orange-900 to-black w-full"></div>
+        <div className="absolute top-0 right-0 p-2">
+            <div className="flex gap-1">
+                 {[1,2,3].map(i => <div key={i} className="w-8 h-1 bg-orange-500/20"></div>)}
             </div>
-          </div>
-        )}
+        </div>
+
+        <div className="flex-1 p-8 md:p-12 relative overflow-hidden">
+            {/* Background Watermark */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-5">
+                 <Hash size={400} className="text-white" />
+            </div>
+
+            {loading ? (
+              <div className="flex flex-col items-center justify-center h-full text-orange-500">
+                <div className="relative">
+                    <div className="absolute inset-0 bg-orange-500 blur-xl opacity-20 animate-pulse"></div>
+                    <Loader2 className="w-16 h-16 animate-spin mb-6 relative z-10" />
+                </div>
+                <p className="font-teko text-3xl tracking-widest animate-pulse">DECRYPTING DATA...</p>
+                <p className="font-mono text-xs text-orange-400/50 mt-2">ACCESSING GEMINI SECURE ARCHIVES</p>
+              </div>
+            ) : (
+              <div className="relative z-10 animate-fadeIn">
+                <div className="flex items-baseline gap-4 mb-8 border-b border-orange-500/30 pb-4">
+                    <h1 className="text-4xl md:text-5xl font-teko text-white uppercase tracking-wide">
+                      {activeTopic}
+                    </h1>
+                    <span className="font-mono text-orange-500 text-xs px-2 py-1 bg-orange-500/10 border border-orange-500/30 rounded">
+                        CONFIDENTIAL
+                    </span>
+                </div>
+                
+                <div className="prose prose-invert prose-orange max-w-none prose-headings:font-cinzel prose-p:font-rajdhani prose-p:text-lg prose-p:leading-relaxed prose-li:text-gray-300">
+                   <div className="whitespace-pre-wrap text-gray-300">
+                      {content}
+                   </div>
+                </div>
+              </div>
+            )}
+        </div>
         
-        {/* Decorative Sindhi Pattern Bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-2 ajrak-pattern opacity-50"></div>
+        {/* Decorative Bottom Bar */}
+        <div className="h-8 bg-black border-t border-white/10 flex justify-between items-center px-4 font-mono text-[10px] text-gray-600">
+            <span>DOC_ID: {Math.random().toString(36).substr(2, 9).toUpperCase()}</span>
+            <span>LAST_EDIT: NOW</span>
+        </div>
       </div>
     </div>
   );

@@ -11,27 +11,26 @@ import {
   Image as ImageIcon, 
   Menu, 
   X,
-  Compass,
   MapPin,
-  Sun
+  ChevronsRight,
+  Trophy,
+  Flame
 } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<GameSection>(GameSection.HOME);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Reliable image URLs for Tharparkar theme
-  // Updated to match user provided visuals: Gadhi Bhit, Dunes, Camel
+  // High-Quality Assets
   const images = {
-    background: "https://images.unsplash.com/photo-1516999902649-0447361a93e3?auto=format&fit=crop&q=80&w=2074", // Vast Desert Textures
-    karoonjhar: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Karoonjhar_Mountains.jpg/800px-Karoonjhar_Mountains.jpg", // Karoonjhar Mountains
-    mithi: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Gadi_Bhitt.jpg/800px-Gadi_Bhitt.jpg", // Gadhi Bhit Mithi (Red Tower)
-    dunes: "https://images.unsplash.com/photo-1547234935-80c7142ee969?auto=format&fit=crop&q=80&w=800", // Golden Dunes
-    camel: "https://images.unsplash.com/photo-1560611843-0599c9678c2e?auto=format&fit=crop&q=80&w=800" // Decorated Camel
+    background: "https://images.unsplash.com/photo-1547234935-80c7142ee969?auto=format&fit=crop&q=80&w=2000",
+    karoonjhar: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Karoonjhar_Mountains.jpg/800px-Karoonjhar_Mountains.jpg",
+    mithi: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Gadi_Bhitt.jpg/800px-Gadi_Bhitt.jpg",
+    dunes: "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?auto=format&fit=crop&q=80&w=800",
+    camel: "https://images.unsplash.com/photo-1598556776374-2c355822369d?auto=format&fit=crop&q=80&w=800"
   };
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    // Fallback to a generic high-quality desert image if specific landmark links fail
     e.currentTarget.src = "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&q=80&w=800"; 
   };
 
@@ -39,110 +38,68 @@ const App: React.FC = () => {
     switch (activeSection) {
       case GameSection.HOME:
         return (
-          <div className="flex flex-col items-center justify-center min-h-[70vh] text-center space-y-12 animate-fadeIn pb-12">
-            {/* Hero Section */}
-            <div className="relative z-10 space-y-4 pt-10">
-               <h1 className="text-6xl md:text-9xl font-cinzel font-bold text-transparent bg-clip-text bg-gradient-to-b from-orange-300 via-orange-500 to-red-900 drop-shadow-[0_5px_15px_rgba(0,0,0,0.9)]">
-                DESERT THUNDER
+          <div className="flex flex-col items-center min-h-[80vh] text-center animate-fadeIn relative z-10">
+            {/* Hero Text */}
+            <div className="mt-12 md:mt-20 space-y-2 relative">
+               <div className="absolute -inset-10 bg-orange-500/10 blur-[100px] rounded-full"></div>
+               <h2 className="text-orange-500 font-teko tracking-[0.8em] text-lg md:text-2xl uppercase animate-pulse">
+                  Project: Sindh
+               </h2>
+               <h1 className="text-7xl md:text-[10rem] leading-[0.85] font-cinzel font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-orange-100 to-gray-400 drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)]">
+                DESERT<br/><span className="text-transparent bg-clip-text bg-gradient-to-t from-orange-600 to-orange-400">THUNDER</span>
               </h1>
-              <h2 className="text-2xl md:text-4xl font-rajdhani tracking-[0.6em] text-orange-100 uppercase drop-shadow-md">
-                Tharparkar Drift
-              </h2>
+              <div className="flex items-center justify-center gap-4 mt-6">
+                <div className="h-[2px] w-12 md:w-32 bg-gradient-to-r from-transparent to-orange-500"></div>
+                <p className="font-rajdhani font-bold text-xl md:text-3xl text-gray-300 tracking-wider">
+                  THARPARKAR DRIFT
+                </p>
+                <div className="h-[2px] w-12 md:w-32 bg-gradient-to-l from-transparent to-orange-500"></div>
+              </div>
             </div>
             
-            <p className="max-w-2xl text-lg md:text-xl text-gray-200 font-rajdhani leading-relaxed backdrop-blur-md bg-black/50 p-8 rounded-2xl border border-orange-500/30 shadow-2xl">
-              Experience the raw beauty of Sindh. Race through the legendary 
-              <span className="text-orange-400 font-bold"> Karoonjhar Mountains</span>, 
-              drift across the golden dunes of <span className="text-orange-400 font-bold">Mithi</span>, 
-              and survive the sandstorms of the Great Thar Desert.
+            <p className="max-w-3xl mx-auto text-lg text-gray-400 font-rajdhani mt-8 leading-relaxed px-4">
+              A high-octane open-world racing experience set in the heart of Pakistan. 
+              Drift through the <span className="text-orange-400 font-bold">Karoonjhar Mountains</span> and conquer the dunes of Thar.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            {/* CTA Buttons */}
+            <div className="flex flex-col md:flex-row gap-6 mt-12 w-full max-w-2xl px-4">
               <button 
                 onClick={() => setActiveSection(GameSection.PLAYABLE)}
-                className="bg-orange-700 hover:bg-orange-600 text-white px-10 py-4 rounded-full font-bold text-xl transition-all shadow-[0_0_30px_rgba(194,65,12,0.6)] flex items-center gap-2 hover:scale-105"
+                className="flex-1 group relative bg-orange-600 hover:bg-orange-500 text-black font-black font-teko text-3xl py-4 clip-angled transition-all hover:scale-105 shadow-[0_0_30px_rgba(234,88,12,0.4)]"
               >
-                <Gamepad2 /> PLAY PROTOTYPE
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
+                <span className="relative flex items-center justify-center gap-3">
+                  <Gamepad2 size={28} /> INIT_PROTOTYPE
+                </span>
               </button>
+              
               <button 
                 onClick={() => setActiveSection(GameSection.GALLERY)}
-                className="bg-black/60 border-2 border-orange-600 text-orange-400 hover:bg-orange-900/40 px-10 py-4 rounded-full font-bold text-xl transition-all hover:scale-105 backdrop-blur-sm"
+                className="flex-1 group relative bg-transparent border-2 border-gray-600 hover:border-orange-500 text-gray-300 hover:text-white font-black font-teko text-3xl py-4 clip-angled transition-all hover:scale-105 backdrop-blur-sm"
               >
-                VIEW ART
+                <span className="relative flex items-center justify-center gap-3">
+                  <ImageIcon size={28} /> VISUAL_ARCHIVES
+                </span>
               </button>
             </div>
 
-            {/* Visual Atmosphere Grid */}
-            <div className="w-full max-w-7xl mt-16">
-              <div className="flex items-center gap-4 mb-8 justify-center text-orange-300/80">
-                <div className="h-[1px] w-20 bg-orange-500/50"></div>
-                <h3 className="text-2xl font-cinzel uppercase tracking-widest">The Spirit of Thar</h3>
-                <div className="h-[1px] w-20 bg-orange-500/50"></div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                {/* Image 1: Mithi (Gadhi Bhit) */}
-                <div className="group relative h-80 rounded-xl overflow-hidden border-2 border-orange-900/30 shadow-2xl cursor-pointer bg-gray-900">
-                  <img 
-                    src={images.mithi}
-                    onError={handleImageError}
-                    alt="Gadhi Bhit Mithi" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-                  <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <p className="font-cinzel text-white text-xl">Gadhi Bhit, Mithi</p>
-                    <p className="text-xs text-orange-300 font-rajdhani mt-1">Historic Watchtower Views</p>
-                  </div>
-                </div>
-
-                {/* Image 2: Dunes */}
-                <div className="group relative h-80 rounded-xl overflow-hidden border-2 border-orange-900/30 shadow-2xl md:mt-12 cursor-pointer bg-gray-900">
-                   <img 
-                    src={images.dunes}
-                    onError={handleImageError}
-                    alt="Thar Desert Dunes" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-                   <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <p className="font-cinzel text-white text-xl">Golden Dunes</p>
-                    <p className="text-xs text-orange-300 font-rajdhani mt-1">Endless Sand & Adventure</p>
-                  </div>
-                </div>
-
-                {/* Image 3: Camel */}
-                <div className="group relative h-80 rounded-xl overflow-hidden border-2 border-orange-900/30 shadow-2xl cursor-pointer bg-gray-900">
-                   <img 
-                    src={images.camel}
-                    onError={handleImageError}
-                    alt="Decorated Camel" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-                   <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <p className="font-cinzel text-white text-xl">Ship of the Desert</p>
-                    <p className="text-xs text-orange-300 font-rajdhani mt-1">Traditional Transport</p>
-                  </div>
-                </div>
-
-                 {/* Image 4: Karoonjhar */}
-                 <div className="group relative h-80 rounded-xl overflow-hidden border-2 border-orange-900/30 shadow-2xl md:mt-12 cursor-pointer bg-gray-900">
-                   <img 
-                    src={images.karoonjhar}
-                    onError={handleImageError}
-                    alt="Karoonjhar Mountains" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
-                   <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <p className="font-cinzel text-white text-xl">Karoonjhar Mountains</p>
-                    <p className="text-xs text-orange-300 font-rajdhani mt-1">Granite Hills of Nagarparkar</p>
-                  </div>
-                </div>
-
-              </div>
+            {/* Feature Highlights */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-7xl mt-24 px-4">
+               {[
+                 { img: images.karoonjhar, title: "Karoonjhar Hills", sub: "Granite Peaks" },
+                 { img: images.mithi, title: "Mithi City", sub: "Urban Drift" },
+                 { img: images.dunes, title: "The Great Desert", sub: "Open World" }
+               ].map((item, i) => (
+                 <div key={i} className="group relative h-64 bg-gray-900 clip-angled overflow-hidden cursor-pointer border border-gray-800 hover:border-orange-500/50 transition-all">
+                    <img src={item.img} onError={handleImageError} alt={item.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 p-6">
+                       <h3 className="text-2xl font-teko uppercase text-white leading-none">{item.title}</h3>
+                       <p className="text-orange-500 font-rajdhani text-sm font-bold tracking-widest">{item.sub}</p>
+                    </div>
+                 </div>
+               ))}
             </div>
           </div>
         );
@@ -160,71 +117,82 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0a05] text-white relative overflow-x-hidden selection:bg-orange-500 selection:text-black font-rajdhani">
-      {/* Background Ambience with Image */}
+    <div className="min-h-screen relative text-white selection:bg-orange-500 selection:text-black font-rajdhani overflow-x-hidden">
+      
+      {/* Background Layer */}
       <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-black/90 z-10"></div>
         <img 
           src={images.background}
           onError={handleImageError}
-          alt="Desert Background" 
-          className="w-full h-full object-cover opacity-40 blur-[2px]"
+          alt="Background" 
+          className="w-full h-full object-cover opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-[#1a0f05]/60 to-black/90"></div>
-        <div className="absolute bottom-0 right-0 w-[800px] h-[600px] bg-orange-600/10 rounded-full blur-[150px] animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050301] via-transparent to-[#050301] z-20"></div>
+        {/* Animated Dust Particles (CSS) */}
+        <div className="absolute inset-0 z-20 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/5/5c/Image_gaussian_noise_example.png')] mix-blend-overlay"></div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-50 border-b border-orange-900/30 bg-black/80 backdrop-blur-md sticky top-0 shadow-lg">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => setActiveSection(GameSection.HOME)}>
-            <div className="w-10 h-10 bg-gradient-to-tr from-orange-700 to-yellow-600 rounded-lg transform rotate-45 flex items-center justify-center border-2 border-yellow-500 group-hover:rotate-90 transition-transform duration-500 shadow-[0_0_15px_rgba(234,88,12,0.6)]">
-               <Sun className="text-black transform -rotate-45 w-6 h-6" />
+      {/* Top Navigation Bar */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0f0a05]/80 backdrop-blur-xl h-20">
+        <div className="container mx-auto px-4 h-full flex justify-between items-center">
+          
+          {/* Logo */}
+          <div 
+            onClick={() => setActiveSection(GameSection.HOME)}
+            className="flex items-center gap-3 cursor-pointer group"
+          >
+            <div className="w-10 h-10 bg-orange-600 clip-angled flex items-center justify-center group-hover:bg-white transition-colors">
+               <Flame size={20} className="text-black fill-black" />
             </div>
             <div className="flex flex-col">
-              <span className="font-cinzel text-xl font-bold hidden sm:block text-orange-100 leading-none">DESERT THUNDER</span>
-              <span className="text-[0.6rem] uppercase tracking-widest text-orange-500 hidden sm:block">Tharparkar Drift</span>
+              <span className="font-cinzel text-xl font-bold tracking-widest leading-none group-hover:text-orange-500 transition-colors">DESERT THUNDER</span>
+              <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500 group-hover:text-white transition-colors">Prototype Build v0.9</span>
             </div>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8">
+          <nav className="hidden lg:flex items-center gap-1">
             {[
-              { id: GameSection.HOME, label: 'Home', icon: <MapPin size={18} /> },
-              { id: GameSection.PLAYABLE, label: 'Prototype', icon: <Gamepad2 size={18} /> },
-              { id: GameSection.GDD, label: 'Design Doc', icon: <FileText size={18} /> },
-              { id: GameSection.GALLERY, label: 'Art', icon: <ImageIcon size={18} /> },
-              { id: GameSection.TECH, label: 'Tech Stack', icon: <Settings size={18} /> },
+              { id: GameSection.HOME, label: 'HUB' },
+              { id: GameSection.PLAYABLE, label: 'DEPLOY' },
+              { id: GameSection.GDD, label: 'INTEL' },
+              { id: GameSection.GALLERY, label: 'VISUALS' },
+              { id: GameSection.TECH, label: 'SYSTEMS' },
             ].map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveSection(item.id as GameSection)}
-                className={`flex items-center gap-2 font-bold uppercase tracking-wider text-sm transition-all duration-300 ${
+                className={`relative px-8 py-2 font-teko text-xl font-bold uppercase tracking-wider transition-all skew-x-[-15deg] border-r border-white/10 hover:bg-white/5 ${
                   activeSection === item.id 
-                    ? 'text-orange-400 border-b-2 border-orange-500 pb-1' 
-                    : 'text-gray-400 hover:text-white hover:border-b-2 hover:border-gray-600 pb-1'
+                    ? 'text-orange-500 bg-white/5 border-orange-500/50' 
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
-                {item.icon}
-                {item.label}
+                <span className="block skew-x-[15deg]">{item.label}</span>
+                {activeSection === item.id && (
+                  <div className="absolute bottom-0 left-0 w-full h-[2px] bg-orange-500 shadow-[0_0_10px_orange]"></div>
+                )}
               </button>
             ))}
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <button className="md:hidden text-orange-500 p-2" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X /> : <Menu />}
+          <button className="lg:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            {mobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
           </button>
         </div>
+      </header>
 
-        {/* Mobile Nav */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 w-full bg-black/95 border-b border-orange-900/50 py-6 flex flex-col gap-6 px-6 animate-slideDown shadow-2xl backdrop-blur-xl">
+      {/* Mobile Nav Overlay */}
+      {mobileMenuOpen && (
+          <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl flex flex-col justify-center items-center gap-8 lg:hidden animate-fadeIn">
              {[
-              { id: GameSection.HOME, label: 'Home' },
-              { id: GameSection.PLAYABLE, label: 'Play Prototype' },
-              { id: GameSection.GDD, label: 'Design Document' },
-              { id: GameSection.GALLERY, label: 'Concept Art' },
-              { id: GameSection.TECH, label: 'Technical Stack' },
+              { id: GameSection.HOME, label: 'Mission Hub' },
+              { id: GameSection.PLAYABLE, label: 'Start Engine' },
+              { id: GameSection.GDD, label: 'Design Intel' },
+              { id: GameSection.GALLERY, label: 'Visual Archives' },
+              { id: GameSection.TECH, label: 'Tech Systems' },
             ].map((item) => (
               <button
                 key={item.id}
@@ -232,8 +200,8 @@ const App: React.FC = () => {
                   setActiveSection(item.id as GameSection);
                   setMobileMenuOpen(false);
                 }}
-                className={`text-left font-rajdhani uppercase text-lg tracking-widest ${
-                  activeSection === item.id ? 'text-orange-500 font-bold' : 'text-gray-400'
+                className={`text-3xl font-teko uppercase tracking-widest ${
+                  activeSection === item.id ? 'text-orange-500' : 'text-gray-500'
                 }`}
               >
                 {item.label}
@@ -241,20 +209,23 @@ const App: React.FC = () => {
             ))}
           </div>
         )}
-      </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 container mx-auto px-4 py-8 md:py-12">
-        {renderContent()}
+      {/* Main Content Area */}
+      <main className="relative z-10 pt-24 pb-12 min-h-screen flex flex-col">
+         {renderContent()}
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-orange-900/30 bg-black/80 backdrop-blur-md py-8 text-center text-gray-500 font-rajdhani text-sm">
-        <p className="text-orange-500/50 mb-2 font-cinzel text-lg">Built for the love of Sindh</p>
-        <p>&copy; 2024 Desert Thunder Dev Team. Concept Application.</p>
-        <p className="font-bold text-orange-400 mt-1">Made by Gavan Kumar</p>
-        <p className="mt-2 text-xs opacity-50">Powered by React, Tailwind & Gemini AI</p>
+      <footer className="relative z-10 border-t border-white/5 bg-black py-8">
+        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-gray-600 font-rajdhani text-sm">
+           <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+              <span>SYSTEM ONLINE // THAR_NET</span>
+           </div>
+           <p className="mt-4 md:mt-0">COPYRIGHT 2024 // THARPARKAR RACING DIVISION</p>
+        </div>
       </footer>
+
     </div>
   );
 };
